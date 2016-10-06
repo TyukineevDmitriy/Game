@@ -27,7 +27,7 @@ namespace Game
         }
         public ImmutableGameDecorator Shift(int value)
         {
-            ImmutableGame newImmutableGame = (ImmutableGame)ImmutableGame.Shift(value);
+            ImmutableGame = (ImmutableGame)ImmutableGame.Shift(value);
             ShiftedNumbers.Push(value);
             return this;
         }
