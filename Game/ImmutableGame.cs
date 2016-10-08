@@ -11,13 +11,8 @@ namespace Game
         public ImmutableGame(params int[] p) : base(p)
         {
         }
-        private ImmutableGame(ImmutableGame immutableGame) 
+        private ImmutableGame(ImmutableGame immutableGame) : base(immutableGame)
         {
-            int fieldSize = (int)Math.Sqrt(immutableGame.Field.Length);
-            Field = new int[fieldSize, fieldSize];
-            FieldIndexes = new Point[immutableGame.Field.Length];
-            Field = (int[,])immutableGame.Field.Clone();
-            FieldIndexes = (Point[])immutableGame.FieldIndexes.Clone();
         }
         public override Game Shift(int value)
         {

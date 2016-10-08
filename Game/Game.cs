@@ -41,27 +41,38 @@ namespace Game
                 }
             }
         }
+        public Game(ImmutableGame immutableGame)
+        {
+            int fieldSize = (int)Math.Sqrt(immutableGame.Field.Length);
+            Field = new int[fieldSize, fieldSize];
+            FieldIndexes = new Point[immutableGame.Field.Length];
+            Field = (int[,])immutableGame.Field.Clone();
+            FieldIndexes = (Point[])immutableGame.FieldIndexes.Clone();
+        }
         public int this[int x, int y]
         {
             get { return Field[x, y]; }
         }
-        public int[] GetLocation(int value)
+        public Point GetLocation(int value)
         {
-            return new int[] { FieldIndexes[value].X, FieldIndexes[value].Y };
+            Point point = new Point();
+            point.X = FieldIndexes[value].X;
+            point.Y = FieldIndexes[value].Y;
+            return point;
         }
         public virtual Game Shift(int value)
         {
-            int[] coordinatesOfZero = GetLocation(0);
-            int[] coordinatesOfValue = GetLocation(value);
-            if (Math.Abs(coordinatesOfValue[0] - coordinatesOfZero[0]) +
-                Math.Abs(coordinatesOfValue[1] - coordinatesOfZero[1]) != 1)
+            Point coordinatesOfZero = GetLocation(0);
+            Point coordinatesOfValue = GetLocation(value);
+            if (Math.Abs(coordinatesOfValue.X - coordinatesOfZero.X) +
+                Math.Abs(coordinatesOfValue.Y - coordinatesOfZero.Y) != 1)
                 throw new ArgumentException("Value must be a zero's neighbor");
-            Field[coordinatesOfZero[0], coordinatesOfZero[1]] = value;
-            FieldIndexes[value].X = coordinatesOfZero[0];
-            FieldIndexes[value].Y = coordinatesOfZero[1];
-            Field[coordinatesOfValue[0], coordinatesOfValue[1]] = 0;
-            FieldIndexes[0].X = coordinatesOfValue[0];
-            FieldIndexes[0].Y = coordinatesOfValue[1];
+            Field[coordinatesOfZero.X, coordinatesOfZero.Y] = value;
+            FieldIndexes[value].X = coordinatesOfZero.X;
+            FieldIndexes[value].Y = coordinatesOfZero.Y;
+            Field[coordinatesOfValue.X, coordinatesOfValue.Y] = 0;
+            FieldIndexes[0].X = coordinatesOfValue.X;
+            FieldIndexes[0].Y = coordinatesOfValue.Y;
             return this;
         }
     }

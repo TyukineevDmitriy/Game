@@ -6,30 +6,39 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    class ImmutableGameDecorator
+    public class ImmutableGameDecorator
     {
-        private ImmutableGame FirstImmutableGame;
         private ImmutableGame ImmutableGame;
-        private Stack<int> ShiftedNumbers;
+        private List<int> ShiftedNumbers;
         public ImmutableGameDecorator(ImmutableGame immutableGame)
         {
-            FirstImmutableGame = immutableGame;
             ImmutableGame = immutableGame;
-            ShiftedNumbers = new Stack<int>();
+            ShiftedNumbers = new List<int>();
         }
         public int this[int x, int y]
         {
-            get { return ImmutableGame[x, y]; }
+            get
+            {
+                return GetActualGame()[x, y];
+            }
         }
-        public int[] GetLocation(int value)
+        public Point GetLocation(int value)
         {
-            return ImmutableGame.GetLocation(value);
+            return GetActualGame().GetLocation(value);
         }
         public ImmutableGameDecorator Shift(int value)
         {
-            ImmutableGame = (ImmutableGame)ImmutableGame.Shift(value);
-            ShiftedNumbers.Push(value);
+            ShiftedNumbers.Add(value);
             return this;
+        }
+        private Game GetActualGame()
+        {
+            Game temp = new Game(ImmutableGame);
+            foreach (int item in ShiftedNumbers)
+            {
+                temp.Shift(item);
+            }
+            return temp;
         }
     }
 }
